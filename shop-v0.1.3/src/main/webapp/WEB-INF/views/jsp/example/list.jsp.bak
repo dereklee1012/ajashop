@@ -1,0 +1,152 @@
+<%--
+  Created by ECLIPSE.
+  User: dereklee
+  Last Editor: dereklee
+  Date: 2017-07-22
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<%@ include file="/WEB-INF/views/includes/header.jsp"%>
+
+<c:if test="${isProduct == false}">
+<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
+<div class="main">
+</c:if>
+
+	<c:if test="${pagingVO.totalPageCount > 0}">
+        <tr>
+            <td class="popup_button_col" colspan="12">
+                    ${pagingVO.firstRow}-${pagingVO.endRow}
+                [${pagingVO.requestPage}/${pagingVO.totalPageCount}]
+            </td>
+        </tr>
+    </c:if>
+
+    <table id="box-table-a" class="table table-hover">
+
+        <tr>
+            <th scope="col">상품 번호</th>
+            <th scope="col">상품 명</th>
+            <th scope="col">크기</th>
+            <th scope="col">소재</th>
+            <th scope="col">구성</th>
+            <th scope="col">옵션</th>
+            <th scope="col">제조/수입</th>
+            <th scope="col">제조국</th>
+            <th scope="col">가격</th>
+            <th scope="col">재고</th>
+            <th scope="col">등록자</th>
+            <th scope="col">등록일</th>
+            <th scope="col" class="popup_button" style="display:none;">추가</th>
+        </tr>
+
+        <c:choose>
+            <c:when test="${hasGoods == false}">
+                <tr>
+                    <td class="popup_button_col" colspan="12">
+                        상품이 없습니다.
+                    </td>
+                </tr>
+            </c:when>
+
+            <c:otherwise>
+                <c:forEach var="list" items="${goodsVOList}">
+                    <tr id="goods_${list.number}">
+                        <td>${list.number}</td>
+                        <td>
+
+                            <c:if test="${isProduct == false}">
+                                <c:set var="query" value="p=${pagingVO.requestPage}&goodsNumber=${list.number}"/>
+                                <a href="<c:url value="/goods/read.do?${query}"/> ">
+                                        ${list.name}
+                                </a>
+                            </c:if>
+
+                            <c:if test="${isProduct == true}">
+                                <c:set var="query" value="p=${pagingVO.requestPage}&goodsNumber=${list.number}"/>
+                                <a target="_blank " href="<c:url value="/goods/read.do?${query}"/> ">
+                                        ${list.name}
+                                </a>
+                            </c:if>
+                        </td>
+                        <td>${list.size}</td>
+                        <td>${list.material}</td>
+                        <td>${list.component}</td>
+                        <td>${list.options}</td>
+                        <td>${list.manufacturer}</td>
+                        <td>${list.madein}</td>
+                        <td id="price_${list.number}">${list.price}</td>
+                        <td>${list.stock}</td>
+                        <td>${list.userEmail}</td>
+                        <td><fmt:formatDate value="${list.createdDate}" pattern="yyyy-MM-dd"/></td>
+                        <td class="popup_button" style="display:none;"><button class="btn_add_goods" name="${list.number}">선택</button></td>
+                    </tr>
+                </c:forEach>
+
+                <%-- Paging --%>
+                <c:if test="${isProduct == false}">
+                    <tr>
+                        <td class="popup_button_col" colspan="12" align="center">
+                            <c:if test="${pagingVO.beginPage > 10}">
+                                <a href="<c:url value="/goods/list.do?p=${pagingVO.beginPage-1}"/> ">이전</a>
+                            </c:if>
+                            <c:forEach var="pno" begin="${pagingVO.beginPage}" end="${pagingVO.endPage}">
+                                <a href="<c:url value="/goods/list.do?p=${pno}"/> ">[${pno}]</a>
+                            </c:forEach>
+                            <c:if test="${pagingVO.endPage < pagingVO.totalPageCount}">
+                                <a href="<c:url value="/goods/list.do?p=${pagingVO.endPage + 1}"/> ">다음</a>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:if>
+                <c:if test="${isProduct == true}">
+                    <tr>
+                        <td class="popup_button_col" colspan="12" align="center">
+                            <c:if test="${pagingVO.beginPage > 10}">
+                                <a href="#" onclick="loadPage('/goods/list.do?p=${pagingVO.beginPage-1}'); return false;">이전</a>
+                            </c:if>
+                            <c:forEach var="pno" begin="${pagingVO.beginPage}" end="${pagingVO.endPage}">
+                                <a href="#" onclick="loadPage('/goods/list.do?p=${pno}'); return false;">[${pno}]</a>
+                            </c:forEach>
+                            <c:if test="${pagingVO.endPage < pagingVO.totalPageCount}">
+                                <a href="#" onclick="loadPage('/goods/list.do?p=${pagingVO.endPage + 1}'); return false;">다음</a>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+
+
+        <c:if test="${isProduct == false}">
+            <tr>
+                <td class="popup_button_col" colspan="12">
+                    <a href="<c:url value="/goods/write.do" />">상품 등록</a>
+                </td>
+            </tr>
+        </c:if>
+
+        <c:if test="${isProduct == true}">
+            <tr>
+                <td class="popup_button_col" colspan="12">
+                    <a target="_blank " href="<c:url value="/goods/write.do" />">상품 등록</a>
+                </td>
+            </tr>
+        </c:if>
+
+    </table>
+
+    <div id="search_div">
+        <form id="search" method="post">
+            <input type="text" name="search_word" id="q" onkeypress="search_enter(document.q);" autocomplete="off"/>
+            <input type="button" value="search" id="search_btn"/>
+        </form>
+    </div>
+
+<c:if test="${isProduct == false}">
+</div>
+</c:if>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="debug">
+	<Appenders>
+    	<Console name="STDOUT" target="SYSTEM_OUT">
+	      	<PatternLayout pattern="%d{HH:mm:ss.SSS} %p %m%n"/>
+	    </Console>
+    
+    	<RollingFile name="daily.rolling.file" fileName="/home/ubuntu/www/logs/ddg-cn-front/daily.log"
+			filePattern="/home/ubuntu/www/logs/ddg-cn-front/daily-%d{MM-dd-yyyy}-%i.log.gz">
+	      	<PatternLayout>
+	        	<Pattern>%d{HH:mm:ss.SSS} %p %m%n</Pattern>
+	      	</PatternLayout>
+	      	<Policies>
+	        	<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+	        	<SizeBasedTriggeringPolicy size="50MB"/>
+	      	</Policies>
+	      	<DefaultRolloverStrategy max="10" fileIndex="min" />
+    	</RollingFile>
+    	
+    	<RollingFile name="sql.rolling.file" fileName="/home/ubuntu/www/logs/ddg-cn-front/sql.log"
+			filePattern="/home/ubuntu/www/logs/ddg-cn-front/sql-%d{MM-dd-yyyy}-%i.log.gz">
+	      	<PatternLayout>
+	        	<Pattern>%d{HH:mm:ss.SSS} %p %m%n</Pattern>
+	      	</PatternLayout>
+	      	<Policies>
+	        	<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+	        	<SizeBasedTriggeringPolicy size="50MB"/>
+	      	</Policies>
+	      	<DefaultRolloverStrategy max="10" fileIndex="min" />
+    	</RollingFile>
+    	<List name="List">
+    	</List>
+	</Appenders>
+	
+  	<Loggers>
+  		<Logger name="com.ajashop.web" level="debug" additivity="false">
+  			<AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="daily.rolling.file" />
+        </Logger>
+        
+  		<Logger name="mybatis.log" level="debug" additivity="false">
+  			<AppenderRef ref="STDOUT"/>
+      		<AppenderRef ref="sql.rolling.file"/>
+    	</Logger>
+    	
+    <!--  
+    	<Logger name="org.springframework" level="info" additivity="false">
+  			<AppenderRef ref="STDOUT"/>
+    	</Logger>
+    -->
+    
+    	<Root level="debug">
+      		<AppenderRef ref="List"/>
+    	</Root>
+  	</Loggers>
+</Configuration>

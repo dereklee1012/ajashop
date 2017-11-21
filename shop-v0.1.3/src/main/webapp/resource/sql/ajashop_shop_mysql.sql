@@ -1,7 +1,7 @@
 
-CREATE SEQUENCE seq_ajashop_member START 1;
-CREATE TABLE tbl_ajashop_member (
-	no int not null nextval(seq_ajashop_member)	-- 자동증가 값(기본필수)
+CREATE SEQUENCE seq_aja_member START 1;
+CREATE TABLE aja_tb_member (
+	no int not null nextval(seq_aja_member)		-- 자동증가 값(기본필수)
 	id varchar(50) ,							-- 아이디
 	password varchar(100) ,						-- 비밀번호
 	first_name varchar(255) ,					-- 성
@@ -51,14 +51,14 @@ CREATE TABLE tbl_ajashop_member (
 
 
 -- 유저 그룹
-CREATE TABLE tbl_ajashop_member_group (
+CREATE TABLE aja_tb_member_group (
 	
 };
 
-CREATE SEQUENCE seq_ajashop_member_history START 1;
+CREATE SEQUENCE aja_tb_member_history START 1;
 -- 유저 히스토리 저장용
-CREATE TABLE tbl_ajashop_member_history (
-	no int not null nextval(seq_ajashop_member_history)	-- 자동증가 값(기본필수)
+CREATE TABLE aja_tb_member_history (
+	no int not null nextval(aja_tb_member_history)	-- 자동증가 값(기본필수)
 	id varchar(50) not null,							-- 아이디
 	
 	zoon_lat	,								-- 위도
